@@ -32,10 +32,40 @@ export async function getAuthorById(id) {
 
 export async function createAuthor(author) {
   // Query the database to create an author and return the newly created author
+  
+//
+const newAuthor = {
+  ...author
+}
+const authorQuery = "INSERT INTO authors (first_name, last_name) VALUES ($1, $2)"
+//Translate result using pool object
+const result = await pool.query(authorQuery, [newAuthor.first_name, newAuthor.last_name]);
+
+// return null if error
+return result || null;
 }
 
 export async function updateAuthorById(id, updates) {
   // Query the database to update an author and return the newly updated author or null
+
+ 
+
+  const updatedAuthor = {
+    ...updates
+  }
+
+
+//   UPDATE table_name
+// SET column1 = value1, column2 = value2, ...
+// WHERE condition;
+
+const queryText = "UPDATE authors SET first_name = $1, last_name = $2 WHERE id = $3"
+
+
+//Translate result
+const result = await pool.query(queryText, [updatedAuthor.first_name, updatedAuthor.last_name, id]);
+ // return updated entry or null (error)
+ return result || null;
 }
 
 export async function deleteAuthorById(id) {
