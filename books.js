@@ -32,7 +32,7 @@ export async function getBookById(id) {
 
 export async function createBook(book) {
   // Query the database to create a book and return the newly created book
-   // Query the database and return the book with a matching id or null
+  // Query the database and return the book with a matching id or null
 
   // Define the SQL query to fetch the book with the specified id from the 'books' table
   const newBook = {
@@ -52,6 +52,18 @@ export async function createBook(book) {
 
 export async function updateBookById(id, updates) {
   // Query the database to update a book and return the newly updated book or null
+  // Capture passed in updated in an object
+  const updatedBook = {
+    ...updates
+  };
+  // Query to pass in to update a book
+  const queryText = "UPDATE books SET title = $1, published_date = $2, author_id = $3 WHERE id = $4";
+
+  // Pass updated fields and ID to pool object to update the database
+  const result = await pool.query(queryText, [updatedBook.title, updatedBook.published_date, updatedBook.author_id, id]);
+
+  // return the result or null if there is an error
+  return result || null;
 }
 
 export async function deleteBookById(id) {
